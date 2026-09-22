@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { CheckCircle2, Phone, Clock, Shield } from "lucide-react"
 import { FooterLinks } from "@/components/polar/footer-links"
 import type { Brand } from "@/lib/brand"
+import { ThankYouVideos } from "@/components/thank-you-videos"
 
 // Optional media/book-offer env (per-client, disabled by default).
 const heroVideoUrl = process.env.NEXT_PUBLIC_HERO_VIDEO_URL || ""
@@ -86,6 +87,8 @@ export function ThankYouContent({ brand }: { brand: Brand }) {
           </div>
         </section>
       )}
+
+      <ThankYouVideos accentColor={brand.accentColor} />
 
       <div className="py-12 md:py-16">
         <div className="mx-auto max-w-3xl px-4">
