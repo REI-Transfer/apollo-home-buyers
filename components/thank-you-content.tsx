@@ -131,11 +131,11 @@ export function ThankYouContent({ brand }: { brand: Brand }) {
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-5">
-                  <img src={bookCoverUrl} alt={`${ownerLabel} — Free Guide`} className="h-80 md:h-96 w-auto drop-shadow-xl" />
+                  <img src={bookCoverUrl} alt={`${ownerLabel}: Free Guide`} className="h-80 md:h-96 w-auto drop-shadow-xl" />
                   <div className="text-center w-full">
                     <h3 className="text-xl md:text-2xl font-bold text-gray-900">Get {ownerLabel}&apos;s Free Guide</h3>
                     <p className="mt-2 text-gray-600 text-sm md:text-base max-w-md mx-auto">
-                      Learn the insider secrets to selling your home fast for top dollar — no agents, no fees, no repairs needed.
+                      Learn the insider secrets to selling your home fast for top dollar. No agents, no fees, no repairs needed.
                     </p>
                     <div className="mt-4 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                       <input type="email" value={bookEmail} onChange={(e) => setBookEmail(e.target.value)} placeholder="Your email address"
