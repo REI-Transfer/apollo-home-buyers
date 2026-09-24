@@ -20,9 +20,9 @@ function buildBlocks(brand: Brand): Block[] {
     { type: "hook-headline", content: "A Simple, Honest Way to Sell Your House" },
     {
       type: "body",
-      content: `${company} buys houses directly from homeowners in ${market}. No listings, no showings, no repairs — just a fair cash offer and a closing date you choose.`,
+      content: `${company} buys houses directly from homeowners in ${market}. No listings, no showings, no repairs. Just a fair cash offer and a closing date you choose.`,
     },
-    { type: "valueprop", content: "No Repairs Needed|Sell exactly as-is. Leaky roof, dated kitchen, tenant damage — we handle it. You fix nothing and clean nothing." },
+    { type: "valueprop", content: "No Repairs Needed|Sell exactly as-is. Leaky roof, dated kitchen, tenant damage. We handle it. You fix nothing and clean nothing." },
     { type: "valueprop", content: "No Fees or Commissions|No agent commissions and no closing costs. The number on your offer is the number you walk away with." },
     { type: "valueprop", content: "Close On Your Timeline|Need to close in a week? Need sixty days to sort out your next move? You pick the date that works for you." },
     { type: "valueprop", content: "A Fair, Final Offer|We do our homework before we make an offer, so the number doesn't get chipped away after we see the home." },
@@ -34,7 +34,7 @@ function buildBlocks(brand: Brand): Block[] {
     { type: "divider", content: "" },
     { type: "subheadline", content: "Why Homeowners Choose Us Over a Traditional Listing" },
     { type: "comparison", content: "" },
-    { type: "cta", content: "Get your cash offer now — it only takes two minutes." },
+    { type: "cta", content: "Get your cash offer now. It only takes two minutes." },
   ];
 }
 
@@ -107,7 +107,7 @@ export function SalesLetterSection({ brand }: { brand: Brand }) {
     <section ref={sectionRef} className="bg-background py-20 md:py-32 lg:py-40">
       <div className="mx-auto max-w-3xl px-6 md:px-12">
         {blocks.map((paragraph, index) => {
-          const isVisible = visibleItems.has(index);
+          const isVisible = true; // static: no scroll-in fade, the copy is readable immediately
 
           if (paragraph.type === "hook-headline") {
             return (

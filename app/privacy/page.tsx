@@ -5,7 +5,7 @@ import { buildBrand } from "@/lib/brand"
 import { FooterLinks } from "@/components/polar/footer-links"
 
 export const metadata: Metadata = {
-  title: `${config.companyName} — Privacy Policy`,
+  title: `${config.companyName} | Privacy Policy`,
 }
 
 export default function PrivacyPage() {

@@ -5,7 +5,7 @@ import { buildBrand } from "@/lib/brand"
 import { FooterLinks } from "@/components/polar/footer-links"
 
 export const metadata: Metadata = {
-  title: `${config.companyName} — Terms of Service`,
+  title: `${config.companyName} | Terms of Service`,
 }
 
 export default function TermsPage() {

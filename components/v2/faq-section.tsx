@@ -10,11 +10,11 @@ function buildFaqs(brand: Brand) {
   return [
     {
       question: "How does the cash offer process work?",
-      answer: `Enter your address and answer a few quick questions. ${company} reviews your property details and comparable sales, then follows up with a fair cash offer — usually within 24 hours. There's no cost and no obligation.`,
+      answer: `Enter your address and answer a few quick questions. ${company} reviews your property details and comparable sales, then follows up with a fair cash offer, usually within 24 hours. There's no cost and no obligation.`,
     },
     {
       question: "Do I need to make any repairs before selling?",
-      answer: "No. We buy houses in any condition. Roof damage, outdated kitchens, overgrown yards, tenant damage — we've seen it all. You don't need to fix, clean, or stage anything.",
+      answer: "No. We buy houses in any condition. Roof damage, outdated kitchens, overgrown yards, tenant damage. We've seen it all. You don't need to fix, clean, or stage anything.",
     },
     {
       question: "Are there any fees or commissions?",
