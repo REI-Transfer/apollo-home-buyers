@@ -107,7 +107,7 @@ export function SalesLetterSection({ brand }: { brand: Brand }) {
     <section ref={sectionRef} className="bg-background py-20 md:py-32 lg:py-40">
       <div className="mx-auto max-w-3xl px-6 md:px-12">
         {blocks.map((paragraph, index) => {
-          const isVisible = visibleItems.has(index);
+          const isVisible = true; // static: no scroll-in fade, the copy is readable immediately
 
           if (paragraph.type === "hook-headline") {
             return (
