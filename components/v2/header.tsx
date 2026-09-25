@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, MapPin, ArrowRight } from "lucide-react";
-import { AddressAutocomplete, type AddressDetails } from "@/components/survey/address-autocomplete";
+import { AddressAutocomplete, type AddressAutocompleteHandle, type AddressDetails } from "@/components/survey/address-autocomplete";
 import { SurveyCard } from "@/components/v2/survey-card";
 import type { Brand } from "@/lib/brand";
 
@@ -13,6 +13,8 @@ export function Header({ brand }: { brand: Brand }) {
   const [pastHero, setPastHero] = useState(false);
   const [address, setAddress] = useState("");
   const [showSurvey, setShowSurvey] = useState(false);
+  const [addressDetails, setAddressDetails] = useState<AddressDetails | undefined>();
+  const addressRef = useRef<AddressAutocompleteHandle>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,8 +31,13 @@ export function Header({ brand }: { brand: Brand }) {
 
   const handleAddressSelect = (addr: string, details: AddressDetails) => {
     setAddress(addr);
+    setAddressDetails(details);
     setShowSurvey(true);
   };
+
+  // Go button and Enter: look up the typed address and run handleAddressSelect,
+  // instead of opening the survey with an address Google never matched.
+  const handleGo = () => { addressRef.current?.resolveTyped(); };
 
   return (
     <>
@@ -55,15 +62,18 @@ export function Header({ brand }: { brand: Brand }) {
               <div className="relative w-full flex items-center gap-2">
                 <div className="relative flex-1">
                   <AddressAutocomplete
+                    ref={addressRef}
+                    onSubmit={handleGo}
+                    hintClassName="absolute left-0 top-full mt-1 text-xs font-medium"
                     value={address}
-                    onChange={setAddress}
+                    onChange={(a) => { setAddress(a); setAddressDetails(undefined); }}
                     onSelect={handleAddressSelect}
                     placeholder="Enter your address..."
                     className="[&_input]:h-9 [&_input]:text-sm [&_input]:rounded-lg [&_input]:bg-[#F5F7FA] [&_input]:border-[#E2E8F0]"
                   />
                 </div>
                 <button
-                  onClick={() => { if (address.trim()) setShowSurvey(true); }}
+                  onClick={handleGo}
                   className="shrink-0 h-9 px-4 bg-[#1B2A4A] hover:bg-[#131E36] text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5"
                 >
                   Go
@@ -110,7 +120,7 @@ export function Header({ brand }: { brand: Brand }) {
             >
               Close
             </button>
-            <SurveyCard initialAddress={address} brand={brand} />
+            <SurveyCard initialAddress={address} initialDetails={addressDetails} brand={brand} />
           </div>
         </div>
       )}

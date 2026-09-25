@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowRight, ArrowDown, Shield, ShieldCheck, MapPin, Clock, DollarSign } from "lucide-react";
 import { SurveyCard } from "@/components/v2/survey-card";
-import { AddressAutocomplete, type AddressDetails } from "@/components/survey/address-autocomplete";
+import { AddressAutocomplete, type AddressAutocompleteHandle, type AddressDetails } from "@/components/survey/address-autocomplete";
 import { isWithinServiceArea } from "@/lib/service-area";
 import { marketPhrase, type Brand } from "@/lib/brand";
 
@@ -13,11 +13,14 @@ export function HeroSection({ brand }: { brand: Brand }) {
   const [initialAddress, setInitialAddress] = useState("");
   const [addressVerified, setAddressVerified] = useState(false);
   const [outsideAreaError, setOutsideAreaError] = useState(false);
+  const [initialDetails, setInitialDetails] = useState<AddressDetails | undefined>();
+  const addressRef = useRef<AddressAutocompleteHandle>(null);
 
   const handleAddressSelect = (address: string, details: AddressDetails) => {
     // Env-driven service-area gate. Permissive when NEXT_PUBLIC_SERVICE_AREAS is empty.
     if (isWithinServiceArea(details.lat, details.lng)) {
       setInitialAddress(address);
+      setInitialDetails(details);
       setAddressVerified(true);
       setOutsideAreaError(false);
       setShowSurvey(true);
@@ -25,6 +28,13 @@ export function HeroSection({ brand }: { brand: Brand }) {
       setAddressVerified(false);
       setOutsideAreaError(true);
     }
+  };
+
+  // Button and Enter/Go: a typed address that wasn't picked from the list is
+  // looked up and sent through handleAddressSelect, same as tapping it.
+  const handleGetOffer = () => {
+    if (addressVerified) setShowSurvey(true);
+    else addressRef.current?.resolveTyped();
   };
 
   return (
@@ -75,6 +85,8 @@ export function HeroSection({ brand }: { brand: Brand }) {
                 </div>
                 <div className="relative">
                   <AddressAutocomplete
+                    ref={addressRef}
+                    onSubmit={handleGetOffer}
                     value={initialAddress}
                     onChange={(address) => { setInitialAddress(address); setAddressVerified(false); setOutsideAreaError(false); }}
                     onSelect={handleAddressSelect}
@@ -83,7 +95,7 @@ export function HeroSection({ brand }: { brand: Brand }) {
                   />
                 </div>
                 <button
-                  onClick={() => { if (addressVerified) setShowSurvey(true) }}
+                  onClick={handleGetOffer}
                   className="w-full h-14 bg-[#1B2A4A] hover:bg-[#131E36] text-white font-semibold text-xl rounded-2xl transition-all shadow-lg shadow-[#1B2A4A]/20 flex items-center justify-center gap-2"
                 >
                   Get My Free Cash Offer
@@ -123,7 +135,7 @@ export function HeroSection({ brand }: { brand: Brand }) {
               </div>
             ) : (
               <div className="animate-scale-in">
-                <SurveyCard initialAddress={initialAddress} brand={brand} />
+                <SurveyCard initialAddress={initialAddress} initialDetails={initialDetails} brand={brand} />
               </div>
             )}
           </div>
