@@ -89,6 +89,7 @@ const REASON_OPTIONS = [
 const SCORE_TIMELINE: Record<string, number> = {
   'asap': 3, '2-weeks': 2, '30-days': 1, '60-days': 0, 'flexible': 0,
 }
+const TIMELINE_NEUTRAL = 1
 const SCORE_OWNERSHIP: Record<string, number> = {
   '10-plus-years': 3, '5-10-years': 1, '3-5-years': 0, '1-3-years': 0,
   // inherited: exempt from the ownership hard-DQ; scored 3 (matches Elevate v2.51).
@@ -105,7 +106,7 @@ const SCORE_CONDITION: Record<string, number> = {
   'fair': 0, 'good': 0, 'excellent': 0,
 }
 function calculateLeadScore(d: SurveyData): number {
-  const t = SCORE_TIMELINE[d.timeline] ?? 0
+  const t = d.timeline ? (SCORE_TIMELINE[d.timeline] ?? 0) : TIMELINE_NEUTRAL
   const o = SCORE_OWNERSHIP[d.ownershipLength] ?? 0
   const r = SCORE_REASON[d.reason] ?? 0
   const c = SCORE_CONDITION[d.condition] ?? 0
@@ -204,7 +205,7 @@ function validateName(name: string): { valid: boolean; msg: string } {
 const STAGE1_STEPS = 4 // 1=address, 2=owner, 3=listed, 4=contact
 type Stage2Field = "propertyType" | "ownershipLength" | "timeline" | "condition" | "reason"
 // The original v2 question order, minus the questions that moved to Stage 1.
-const STAGE2_FIELDS: Stage2Field[] = ["propertyType", "ownershipLength", "timeline", "condition", "reason"]
+const STAGE2_FIELDS: Stage2Field[] = ["propertyType", "ownershipLength", "condition", "reason"]
 
 // Stage-2 hard disqualifiers (unchanged from the one-step v2 form).
 // Condo is a DQ here (townhouse still qualifies).
@@ -916,12 +917,6 @@ export function SurveyCard({ initialAddress, initialDetails, brand }: SurveyCard
           "When did you purchase the home?",
           "This helps us estimate your equity position.",
           OWNERSHIP_LENGTH_OPTIONS.map((o) => renderOptionButton(o, surveyData.ownershipLength, () => handleStage2OptionSelect("ownershipLength", o.id)))
-        )}
-
-        {currentField === "timeline" && renderQuestion(
-          "How fast are you looking to sell?",
-          "Select your ideal timeline for closing.",
-          TIMELINE_OPTIONS.map((o) => renderOptionButton(o, surveyData.timeline, () => handleStage2OptionSelect("timeline", o.id)))
         )}
 
         {currentField === "condition" && renderQuestion(
